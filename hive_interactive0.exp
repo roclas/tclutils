@@ -1,6 +1,5 @@
 #!/usr/bin/expect -f
 
-
 set force_conservative 0  ;# set to 1 to force conservative mode even if
 			  ;# script wasn't run conservatively originally
 if {$force_conservative} {
@@ -15,7 +14,7 @@ set timeout -1
 spawn $env(SHELL)
 match_max 100000
 
-expect "~\$ "
+expect "\$ "
 send -- "ssh  -i ~/.ssh/demo_tableau.pem hadoop@\$JAVIER_AWS_IP"
 expect -exact " -i ~/.ssh/demo_tableau.pem hadoop@\$JAVIER_AWS_IP"
 send -- "\r"
@@ -30,15 +29,17 @@ foreach arg $argv {
 	close $fp
 	set data [split $file_data "\n"]
 	foreach line $data {
-		send -- "$line \r"
-		expect "> "
+		set line [string trim $line  ]
+		if { [ string length $line ] == 0 } {
+		    puts "$line \r"
+		} else {
+			if {[string match "--*" $line]} {
+		    		puts "$line \r"
+			} else {
+				send -- "$line \r"
+				expect "> "
+			}
+		}
 	}
 }
-#send -- ""
-#expect -exact "hadoop@ip-11-12-13-142:~\$ "
-#send -- ""
-#expect -exact "logout\r
-#Connection to 123.1.2.2 closed.\r\r
-#\]0;carlos@work: ~carlos@work:~\$ "
-#send -- ""
-#expect eof
+expect eof
