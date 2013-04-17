@@ -35,10 +35,10 @@ foreach arg $argv {
 	}
 }
 #send -- ""
-#expect -exact "hadoop@ip-10-33-0-142:~\$ "
+#expect -exact "hadoop@ip-11-12-13-142:~\$ "
 #send -- ""
 #expect -exact "logout\r
-#Connection to 176.34.240.252 closed.\r\r
+#Connection to 123.1.2.2 closed.\r\r
 #\]0;carlos@work: ~carlos@work:~\$ "
 #send -- ""
 #expect eof
