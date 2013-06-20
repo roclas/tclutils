@@ -10,16 +10,25 @@ if {$force_conservative} {
 	}
 }
 
+set server [lindex $argv 0]
+set argv [lrange $argv 1 9]
+
 set timeout -1
 spawn $env(SHELL)
 match_max 100000
 
 expect "\$ "
-send -- "ssh  -i ~/.ssh/demo_tableau.pem hadoop@\$JAVIER_AWS_IP"
-expect -exact " -i ~/.ssh/demo_tableau.pem hadoop@\$JAVIER_AWS_IP"
-send -- "\r"
-expect "~\$ "
-send -- "hive\r"
+spawn ssh  -i /home/carlos/.ssh/carloshernandez.pem hadoop@$server
+#expect "ssh  -i /home/carlos/.ssh/carloshernandez.pem hadoop@\$server"
+expect {
+  "> " { }
+  "$ " { 
+	send_user "\n########################\n############# we're in\n########################\n"
+	send "\r"
+	expect "\$"
+	send "hive\r"
+  }
+}
 expect "hive> "
 
 foreach arg $argv {
