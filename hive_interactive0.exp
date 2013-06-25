@@ -47,8 +47,8 @@ foreach arg $argv {
 			} else {
 				send -- "$line \r"
 				expect {
-  					"> " { }
 					"FAILED:" {break}
+  					"> " { }
 				}
 			}
 		}
